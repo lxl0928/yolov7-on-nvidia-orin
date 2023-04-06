@@ -8,6 +8,6 @@ class YoloV7(HttpUser):
     def index(self):
         url = f"{self.host}/yolov7/test"
         print(url)
-        response = self.client.post(url=url, json={"imgDir": "/app/inference/images"})
+        response = self.client.post(url=url, json={"imgDir": "/app/inference/objects"})
         assert response.status_code == 200
 

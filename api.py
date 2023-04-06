@@ -17,11 +17,6 @@ class RequestBody(BaseModel):
     imgUrls: Optional[List[str]] = Field(description="测试图片网络路径")
 
 
-@app.get("/")
-async def root(request: Request):
-    return Response(status_code=200, content=json.dumps({"message": "Hello World"}))
-
-
 @app.post("/yolov7/test")
 async def detect(request_body: RequestBody):
     result_dic = {}
@@ -32,12 +27,17 @@ async def detect(request_body: RequestBody):
             print("imgDir exists")
             result_dic = common_detect(source=request_body.imgDir, no_trace=True)
             print(result_dic)
-
-    else:
-        print(request_body.imgUrls)
-
     return Response(status_code=200, content=json.dumps(result_dic))
 
 
 if __name__ == '__main__':
-    uvicorn.run(app="api:app", host="0.0.0.0", port=8012)
+
+    uvicorn.run(
+        app="api:app",
+        host="0.0.0.0",
+        port=8012,
+        limit_concurrency=100,
+        workers=8,
+        log_level="info",
+        reload=True
+    )

@@ -82,7 +82,7 @@ def common_detect(
             old_img_h = img.shape[2]
             old_img_w = img.shape[3]
             for i in range(3):
-                _ = common_detect_model(img, augment=augment)[0]
+                common_detect_model(img, augment=augment)[0]
 
         # Inference
         with torch.no_grad():   # Calculating gradients would cause a GPU memory leak

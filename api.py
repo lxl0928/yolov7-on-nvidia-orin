@@ -15,7 +15,7 @@ from models.experimental import attempt_load
 from utils.torch_utils import TracedModel
 
 app = FastAPI()
-device = torch.device('cpu')  # or 'cpu'
+device = torch.device('0')  # or 'cpu'
 common_detect_model = attempt_load("./yolov7.pt", map_location=device)  # load FP32 model
 trace, half, img_size = False, False, 640
 if trace:

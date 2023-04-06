@@ -12,10 +12,10 @@ from detect import common_detect
 
 import torch
 from models.experimental import attempt_load
-from utils.torch_utils import TracedModel
+from utils.torch_utils import TracedModel, select_device
 
 app = FastAPI()
-device = torch.device('0')  # or 'cpu'
+device = select_device('0')  # or 'cpu'
 common_detect_model = attempt_load("./yolov7.pt", map_location=device)  # load FP32 model
 trace, half, img_size = False, False, 640
 if trace:
@@ -23,8 +23,6 @@ if trace:
 
 if half:
     common_detect_model.half()  # to FP16
-
-print(common_detect_model)
 
 
 class RequestBody(BaseModel):

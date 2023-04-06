@@ -5,6 +5,8 @@ WORKDIR /app
 copy . /app
 RUN rm -rf .git/
 
+RUN apt-get update && apt-get install vim -y
+
 RUN pip3 config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 RUN pip3 install -r requirements.txt
 

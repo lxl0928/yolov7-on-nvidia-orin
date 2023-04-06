@@ -97,7 +97,6 @@ def common_detect(
             for i in range(3):
                 common_detect_model(img, augment=augment)[0]
 
-
         # Inference
         with torch.no_grad():   # Calculating gradients would cause a GPU memory leak
             pred = common_detect_model(img, augment=augment)[0]
@@ -305,3 +304,6 @@ if __name__ == '__main__':
                 strip_optimizer(opt.weights)
         else:
             detect()
+
+if __name__ == '__main__':
+    common_detect(source="/app/inference/images", weights="/app/yolov7.pt", img_size=640, conf_thres=0.25, iou_thres=0.45, device="cuda:0", view_img=False, save_txt=False, save_conf=False, nosave=True, classes=None, agnostic_nms=False, augment=False, update=False, project="runs/detect", name="exp", exist_ok=False, no_trace=True)

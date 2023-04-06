@@ -15,6 +15,13 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized,
 from collections import defaultdict
 
 
+import torch
+from models.experimental import attempt_load
+from utils.torch_utils import TracedModel, select_device
+
+device = select_device('0')  # or 'cpu'
+common_detect_model = attempt_load("/app/yolov7.pt", map_location=device)  # load FP32 model
+
 def common_detect(
         weights: str = 'yolov7.pt',
         source: str = 'inference/images',
@@ -30,8 +37,7 @@ def common_detect(
         project: str = 'runs/detect',
         name: str = 'exp',
         exist_ok: bool = False,
-        no_trace: bool = False,
-        common_detect_model: str = None
+        no_trace: bool = True,
 ):
     source, weights, view_img, save_txt, imgsz, trace = source, weights, view_img, save_txt, img_size, not no_trace
     webcam = source.isnumeric() or source.endswith('.txt') or source.lower().startswith(
@@ -46,10 +52,17 @@ def common_detect(
     device = select_device(device)
     half = device.type != 'cpu'  # half precision only supported on CUDA
 
+    global common_detect_model
     # Load model: 启动时加载
     # model = attempt_load(weights, map_location=device)  # load FP32 model
     stride = int(common_detect_model.stride.max())  # model stride
     imgsz = check_img_size(imgsz, s=stride)  # check img_size
+
+    if trace:
+        common_detect_model = TracedModel(common_detect_model, device, img_size)
+
+    if half:
+        common_detect_model.half()  # to FP16
 
     # Set Dataloader
     if webcam:
@@ -83,6 +96,7 @@ def common_detect(
             old_img_w = img.shape[3]
             for i in range(3):
                 common_detect_model(img, augment=augment)[0]
+
 
         # Inference
         with torch.no_grad():   # Calculating gradients would cause a GPU memory leak

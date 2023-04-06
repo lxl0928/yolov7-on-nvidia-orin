@@ -30,7 +30,7 @@ async def detect(request_body: RequestBody):
         print(request_body.imgDir)
         if os.path.exists(request_body.imgDir):
             print("imgDir exists")
-            result_dic = common_detect(source=request_body.imgDir)
+            result_dic = common_detect(source=request_body.imgDir, no_trace=True)
             print(result_dic)
 
     else:

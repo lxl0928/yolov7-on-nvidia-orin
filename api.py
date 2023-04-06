@@ -46,7 +46,7 @@ async def detect(request_body: RequestBody):
 
     if request_body.imgUrls:
         print(request_body.imgUrls)
-        result_dict = {}
+        result_dic = {}
 
     return Response(status_code=200, content=json.dumps(result_dic))
 

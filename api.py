@@ -16,7 +16,7 @@ from utils.torch_utils import TracedModel, select_device
 
 app = FastAPI()
 device = select_device('0')  # or 'cpu'
-common_detect_model = attempt_load("./yolov7.pt", map_location=device)  # load FP32 model
+common_detect_model = attempt_load("/app/yolov7.pt", map_location=device)  # load FP32 model
 trace, half, img_size = False, False, 640
 if trace:
     common_detect_model = TracedModel(common_detect_model, device, img_size)
@@ -46,6 +46,7 @@ async def detect(request_body: RequestBody):
 
     if request_body.imgUrls:
         print(request_body.imgUrls)
+        result_dict = {}
 
     return Response(status_code=200, content=json.dumps(result_dic))
 

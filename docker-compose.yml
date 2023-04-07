@@ -1,12 +1,38 @@
 version: "3"
 services:
-  yolov7_arm64:
+  yolov7_arm64_8010:
+    image: yolov7_arm64:v0.0.2
+    volumes:
+      - .:/app
+    ports:
+      - "8010:8012"
+    command: python3 api.py
+    tty: true
+    runtime: nvidia
+  yolov7_arm64_8011:
+    image: yolov7_arm64:v0.0.2
+    volumes:
+      - .:/app
+    ports:
+      - "8011:8012"
+    command: python3 api.py
+    tty: true
+    runtime: nvidia
+  yolov7_arm64_8012:
     image: yolov7_arm64:v0.0.2
     volumes:
       - .:/app
     ports:
       - "8012:8012"
     command: python3 api.py
-    # command: top
+    tty: true
+    runtime: nvidia
+  yolov7_arm64_8013:
+    image: yolov7_arm64:v0.0.2
+    volumes:
+      - .:/app
+    ports:
+      - "8013:8012"
+    command: python3 api.py
     tty: true
     runtime: nvidia

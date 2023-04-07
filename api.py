@@ -17,10 +17,23 @@ class RequestBody(BaseModel):
     imgUrls: Optional[List[str]] = Field(description="测试图片网络路径")
 
 
+@app.post("/api/test")
+async def detect(request_body: RequestBody):
+    result_dic = {}
+    print("请求路径: ", request_body.imgDir)
+    if request_body.imgDir:
+        print(request_body.imgDir)
+        if os.path.exists(request_body.imgDir):
+            print("imgDir exists")
+            # result_dic = common_detect(source=request_body.imgDir, no_trace=True)
+            print(result_dic)
+    return Response(status_code=200, content=json.dumps(result_dic))
+
+
 @app.post("/yolov7/test")
 async def detect(request_body: RequestBody):
     result_dic = {}
-
+    print("请求路径: ", request_body.imgDir)
     if request_body.imgDir:
         print(request_body.imgDir)
         if os.path.exists(request_body.imgDir):
@@ -37,7 +50,5 @@ if __name__ == '__main__':
         host="0.0.0.0",
         port=8012,
         limit_concurrency=100,
-        workers=8,
-        log_level="info",
-        reload=True
+        workers=4,
     )

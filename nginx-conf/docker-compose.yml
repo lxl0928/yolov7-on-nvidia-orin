@@ -1,0 +1,15 @@
+version: '3'
+services:
+  nginx:
+    container_name: nginx
+    image: nginx
+    restart: always
+    ports:
+      - 80:80
+    privileged: true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./conf/nginx/log/:/var/log/nginx
+      - ./conf/nginx/conf.d:/etc/nginx/conf.d
+      - ./conf/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./conf/nginx/html:/usr/share/nginx/html

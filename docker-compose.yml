@@ -1,7 +1,7 @@
 version: "3"
 services:
   yolov7_arm64_8010:
-    image: yolov7_arm64:v0.0.3
+    image: yolov7_arm64:v0.0.6
     volumes:
       - .:/app
     ports:
@@ -10,7 +10,7 @@ services:
     tty: true
     runtime: nvidia
   yolov7_arm64_8011:
-    image: yolov7_arm64:v0.0.3
+    image: yolov7_arm64:v0.0.6
     volumes:
       - .:/app
     ports:
@@ -19,7 +19,7 @@ services:
     tty: true
     runtime: nvidia
   yolov7_arm64_8012:
-    image: yolov7_arm64:v0.0.3
+    image: yolov7_arm64:v0.0.6
     volumes:
       - .:/app
     ports:
@@ -28,7 +28,7 @@ services:
     tty: true
     runtime: nvidia
   yolov7_arm64_8013:
-    image: yolov7_arm64:v0.0.3
+    image: yolov7_arm64:v0.0.6
     volumes:
       - .:/app
     ports:

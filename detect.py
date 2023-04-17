@@ -22,8 +22,14 @@ from utils.torch_utils import TracedModel, select_device
 # device = select_device('cpu')  # or 'cpu'
 # common_detect_model = attempt_load("/Users/lixiaolong/manyProjects/githubProjects/yolov7-on-nvidia-orin/yolov7.pt", map_location=device)  # load FP32 model
 
+# 以cpu的方式运行yolo
 device = select_device('cpu')  # or 'cpu'
 common_detect_model = attempt_load("/app/yolov7.pt", map_location=device)  # load FP32 model
+
+# 以gpu的方式运行yolo
+device = select_device('0')
+common_detect_model = attempt_load("/app/yolov7.pt", map_location=device)  # load FP32 model
+
 
 def common_detect(
         weights: str = 'yolov7.pt',

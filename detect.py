@@ -96,6 +96,7 @@ def common_detect(
     old_img_b = 1
 
     t0 = time.time()
+    res = list()
     for path, img, im0s, vid_cap in dataset:
         img = torch.from_numpy(img).to(GPU_DEVICE)
         img = img.half() if half else img.float()  # uint8 to fp16/32
@@ -122,15 +123,6 @@ def common_detect(
         pred = non_max_suppression(pred, conf_thres, iou_thres, classes=classes, agnostic=agnostic_nms)
         t1_c = time.time()
         print(f"cost 2: {t1_c - t1_b} s")
-
-        # Second-stage classifier
-        classify = False
-        if classify:
-            modelc = load_classifier(name='resnet101', n=2)  # initialize
-            modelc.load_state_dict(torch.load('weights/resnet101.pt', map_location=GPU_DEVICE)['model']).to(GPU_DEVICE).eval()
-
-            # Apply Classifier
-            pred = apply_classifier(pred, modelc, img, im0s)
 
         names_obj = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light',
         'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow',
@@ -170,8 +162,10 @@ def common_detect(
                     result_dic[label]['items'].append(box_data)
                     result_dic[label]['nums'] += 1
 
+                res.append(result_dic)
+
     print(f'Done. ({time.time() - t0:.3f}s)')
-    return result_dic
+    return res
 
 
 if __name__ == '__main__':
@@ -201,10 +195,10 @@ if __name__ == '__main__':
     with torch.no_grad():
         if opt.update:  # update all models (to fix SourceChangeWarning)
             for opt.weights in ['yolov7.pt']:
-                detect()
+                common_detect()
                 strip_optimizer(opt.weights)
         else:
-            detect()
+            common_detect()
 
 if __name__ == '__main__':
     common_detect(source="/app/inference/images", no_trace=True)
